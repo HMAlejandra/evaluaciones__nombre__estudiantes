@@ -145,3 +145,65 @@ class CustomLoginView(LoginView):
     
     def get_success_url(self):
         return reverse_lazy('home')
+
+
+# ============================================
+# VISTA REGISTRO - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+
+def registro_view(request):
+    """Vista para registrar nuevos usuarios."""
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'¡Bienvenido {user.username}! Tu cuenta ha sido creada exitosamente.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'auth/registro.html', {'form': form})
+
+
+# ============================================
+# VISTA LOGOUT - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.views import LogoutView
+
+
+class CustomLogoutView(LogoutView):
+    """Vista personalizada para cerrar sesión."""
+    next_page = 'home'
+
+
+# ============================================
+# VISTA RECUPERAR PASSWORD - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.forms import PasswordResetForm
+
+
+def recuperar_password_view(request):
+    """Vista para recuperar contraseña."""
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=False,
+                email_template_name='auth/password_reset_email.html',
+            )
+            messages.success(request, 'Se ha enviado un correo con instrucciones para recuperar tu contraseña.')
+            return redirect('login')
+    else:
+        form = PasswordResetForm()
+    
+    return render(request, 'auth/recuperar_password.html', {'form': form})

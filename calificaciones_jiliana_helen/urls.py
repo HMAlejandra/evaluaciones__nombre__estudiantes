@@ -14,4 +14,13 @@ urlpatterns = [
     
     # URL de autenticación - LOGIN (HELEN)
     path('login/', views.CustomLoginView.as_view(), name='login'),
+    
+    # URL de autenticación - REGISTRO (HELEN)
+    path('registro/', views.registro_view, name='registro'),
+    
+    # URL de autenticación - LOGOUT (HELEN)
+    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
+    
+    # URL de autenticación - RECUPERAR PASSWORD (HELEN)
+    path('recuperar-password/', views.recuperar_password_view, name='recuperar_password'),
 ]
