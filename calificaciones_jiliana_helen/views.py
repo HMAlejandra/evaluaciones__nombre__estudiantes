@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# ============================================
-# VISTA HOME - PARTE DE JILIANA
-=======
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -13,14 +7,11 @@ from .forms import CalificacionForm
 
 # ============================================
 # VISTAS PÚBLICAS
->>>>>>> feature/jiliana-configuracion
 # ============================================
 
 def home(request):
     """Vista de inicio/home - Accesible para todos"""
     return render(request, 'home.html')
-<<<<<<< HEAD
-=======
 
 
 # ============================================
@@ -137,4 +128,3 @@ def promedio_general(request):
     }
     
     return render(request, 'calificaciones/promedio_general.html', context)
->>>>>>> feature/jiliana-configuracion

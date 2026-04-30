@@ -2,10 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-<<<<<<< HEAD
-    # Vista de inicio - RAMA: feature/jiliana-home
-    path('', views.home, name='home'),
-=======
     # Vista de inicio
     path('', views.home, name='home'),
     
@@ -21,5 +17,4 @@ urlpatterns = [
     # path('logout/', views.logout_view, name='logout'),
     # path('registro/', views.registro_view, name='registro'),
     # path('recuperar-password/', views.recuperar_password, name='recuperar_password'),
->>>>>>> feature/jiliana-configuracion
 ]
