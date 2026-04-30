@@ -282,56 +282,105 @@ promedio_general = Calificacion.objects.all().aggregate(Avg('promedio'))['promed
 
 ## 🚀 Despliegue en Vercel
 
-### Preparación para Vercel:
+### Archivos de Configuración Incluidos:
 
-1. **Instalar dependencias adicionales:**
+El proyecto ya incluye los archivos necesarios para desplegar en Vercel:
 
-```bash
-pip install gunicorn whitenoise
-pip freeze > requirements.txt
-```
+1. **`vercel.json`** - Configuración de Vercel
+2. **`vercel_build.py`** - Script de build automático
+3. **`requirements.txt`** - Dependencias de Python
+4. **`.vercelignore`** - Archivos a ignorar en el despliegue
 
-2. **Crear archivo `vercel.json`:**
+### Pasos para Desplegar:
 
-```json
-{
-  "builds": [
-    {
-      "src": "evaluaciones_jiliana_helen/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "evaluaciones_jiliana_helen/wsgi.py"
-    }
-  ]
-}
-```
+1. **Crear cuenta en Vercel:**
+   - Ve a [vercel.com](https://vercel.com)
+   - Regístrate con tu cuenta de GitHub
 
-3. **Modificar `settings.py`:**
+2. **Conectar tu repositorio:**
+   - Sube tu proyecto a GitHub
+   - En Vercel, haz clic en "Add New Project"
+   - Importa tu repositorio de GitHub
 
-```python
-ALLOWED_HOSTS = ['*']  # Para producción, especificar el dominio
-DEBUG = False  # En producción
+3. **Configurar el proyecto:**
+   - Vercel detectará automáticamente que es un proyecto Python
+   - No necesitas cambiar ninguna configuración
+   - Haz clic en "Deploy"
 
-# Agregar whitenoise para archivos estáticos
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Agregar esta línea
-    # ... resto del middleware
-]
-```
+4. **Esperar el despliegue:**
+   - Vercel ejecutará automáticamente `vercel_build.py`
+   - Instalará las dependencias de `requirements.txt`
+   - Recolectará los archivos estáticos
 
-4. **Desplegar en Vercel:**
+### ⚠️ Limitaciones de Vercel con Django:
+
+**IMPORTANTE:** Vercel tiene limitaciones con Django:
+
+- **SQLite no es persistente** en Vercel (el sistema de archivos es de solo lectura)
+- **Las migraciones no se pueden ejecutar** en tiempo de ejecución
+- **Los datos se perderán** después de cada despliegue
+
+### 🔧 Solución Recomendada: Usar Base de Datos Externa
+
+Para un despliegue funcional, necesitas usar una base de datos externa como PostgreSQL:
+
+#### Opción 1: Usar Neon (PostgreSQL gratuito)
+
+1. **Crear cuenta en Neon:**
+   - Ve a [neon.tech](https://neon.tech)
+   - Crea un proyecto gratuito
+   - Copia la URL de conexión
+
+2. **Actualizar `requirements.txt`:**
+   ```
+   Django==5.0.4
+   asgiref==3.8.1
+   sqlparse==0.5.0
+   tzdata==2024.1
+   psycopg2-binary==2.9.9
+   dj-database-url==2.1.0
+   ```
+
+3. **Actualizar `settings.py`:**
+   ```python
+   import dj_database_url
+   
+   # En la sección de DATABASES:
+   DATABASES = {
+       'default': dj_database_url.config(
+           default='sqlite:///db.sqlite3',
+           conn_max_age=600
+       )
+   }
+   ```
+
+4. **Configurar variable de entorno en Vercel:**
+   - En tu proyecto de Vercel, ve a Settings → Environment Variables
+   - Agrega: `DATABASE_URL` = tu URL de conexión de Neon
+
+#### Opción 2: Usar Railway o Render
+
+Estas plataformas son más adecuadas para Django con SQLite:
+
+- **Railway**: [railway.app](https://railway.app)
+- **Render**: [render.com](https://render.com)
+
+Ambas soportan SQLite persistente y son más fáciles de configurar para Django.
+
+### 📝 Comandos Útiles de Vercel:
 
 ```bash
 # Instalar Vercel CLI
 npm install -g vercel
 
-# Desplegar
+# Desplegar desde la terminal
 vercel
+
+# Desplegar a producción
+vercel --prod
+
+# Ver logs
+vercel logs
 ```
 
 ## 📚 Recursos y Referencias

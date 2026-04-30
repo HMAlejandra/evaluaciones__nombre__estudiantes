@@ -2,16 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "evaluaciones_jiliana_helen/wsgi.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+      "src": "api/index.py",
+      "use": "@vercel/python"
     },
     {
-      "src": "build_files.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "staticfiles"
-      }
+      "src": "requirements.txt",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -21,7 +17,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "evaluaciones_jiliana_helen/wsgi.py"
+      "dest": "/api/index.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  }
 }
