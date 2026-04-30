@@ -12,6 +12,9 @@ urlpatterns = [
     path('calificaciones/eliminar/<int:pk>/', views.eliminar_calificacion, name='eliminar_calificacion'),
     path('promedio-general/', views.promedio_general, name='promedio_general'),
     
+    # URL de autenticación - REGISTRO (HELEN)
+    path('registro/', views.registro_view, name='registro'),
+    
     # URL de autenticación - LOGOUT (HELEN)
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
     

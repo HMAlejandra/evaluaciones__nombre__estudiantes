@@ -131,6 +131,31 @@ def promedio_general(request):
 
 
 # ============================================
+# VISTA REGISTRO - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+
+def registro_view(request):
+    """Vista para registrar nuevos usuarios."""
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'¡Bienvenido {user.username}! Tu cuenta ha sido creada exitosamente.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'auth/registro.html', {'form': form})
+
+
+# ============================================
 # VISTA LOGOUT - PARTE DE HELEN
 # ============================================
 
