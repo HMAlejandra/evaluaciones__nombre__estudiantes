@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Calificación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="page-title text-center mb-4">
+            <i class="fas fa-edit"></i> Editar Calificación
+        </h1>
+        
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle"></i> 
+            Editando calificación de: <strong>{{ calificacion.nombre_estudiante }}</strong> - {{ calificacion.asignatura }}
+        </div>
+        
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.nombre_estudiante.id_for_label }}" class="form-label">
+                                <i class="fas fa-user"></i> {{ form.nombre_estudiante.label }}
+                            </label>
+                            {{ form.nombre_estudiante }}
+                            {% if form.nombre_estudiante.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.nombre_estudiante.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.identificacion.id_for_label }}" class="form-label">
+                                <i class="fas fa-id-card"></i> {{ form.identificacion.label }}
+                            </label>
+                            {{ form.identificacion }}
+                            {% if form.identificacion.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.identificacion.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.asignatura.id_for_label }}" class="form-label">
+                                <i class="fas fa-book"></i> {{ form.asignatura.label }}
+                            </label>
+                            {{ form.asignatura }}
+                            {% if form.asignatura.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.asignatura.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3" style="background-color: #f8fafc;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-calculator"></i> Promedio Actual: 
+                                <span class="badge {% if calificacion.promedio >= 70 %}bg-success{% elif calificacion.promedio >= 50 %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ calificacion.promedio }}
+                                </span>
+                            </h5>
+                            <p class="card-text mb-0">
+                                <small class="text-muted">El promedio se recalculará automáticamente al guardar los cambios.</small>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.nota1.id_for_label }}" class="form-label">
+                                <i class="fas fa-star"></i> {{ form.nota1.label }}
+                            </label>
+                            {{ form.nota1 }}
+                            {% if form.nota1.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.nota1.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.nota2.id_for_label }}" class="form-label">
+                                <i class="fas fa-star"></i> {{ form.nota2.label }}
+                            </label>
+                            {{ form.nota2 }}
+                            {% if form.nota2.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.nota2.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.nota3.id_for_label }}" class="form-label">
+                                <i class="fas fa-star"></i> {{ form.nota3.label }}
+                            </label>
+                            {{ form.nota3 }}
+                            {% if form.nota3.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.nota3.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'listar_calificaciones' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save"></i> Actualizar Calificación
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Validación en tiempo real
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            if (value < 0) {
+                this.value = 0;
+            } else if (value > 100) {
+                this.value = 100;
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Promedio General{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="page-title mb-4">
+        <i class="fas fa-chart-line"></i> Estadísticas y Promedio General
+    </h1>
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="card-body py-5">
+                    <h2 class="mb-3">
+                        <i class="fas fa-calculator"></i> Promedio General del Sistema
+                    </h2>
+                    <div style="font-size: 5rem; font-weight: 700;">
+                        {{ promedio_general }}
+                    </div>
+                    <p class="lead mb-0">
+                        Calculado con la función agregada Avg() de Django
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x" style="color: #3b82f6;"></i>
+                    </div>
+                    <h3 class="display-4">{{ total_estudiantes }}</h3>
+                    <p class="text-muted mb-0">Total de Registros</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-bar fa-3x" style="color: #10b981;"></i>
+                    </div>
+                    <h3 class="display-4">{{ promedio_general }}</h3>
+                    <p class="text-muted mb-0">Promedio General</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-trophy fa-3x" style="color: #f59e0b;"></i>
+                    </div>
+                    <h3 class="display-4">
+                        {% if promedio_general >= 70 %}
+                            A
+                        {% elif promedio_general >= 50 %}
+                            B
+                        {% else %}
+                            C
+                        {% endif %}
+                    </h3>
+                    <p class="text-muted mb-0">Calificación</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title mb-4">
+                <i class="fas fa-info-circle"></i> Información del Cálculo
+            </h4>
+            <div class="row text-start">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-code"></i> Método Utilizado</h5>
+                    <pre class="bg-light p-3 rounded"><code>from django.db.models import Avg
+
+promedio_general = Calificacion.objects.all().aggregate(Avg('promedio'))['promedio__avg']</code></pre>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-lightbulb"></i> Descripción</h5>
+                    <p>
+                        El promedio general se calcula utilizando la función agregada <code>Avg()</code> de Django, 
+                        que realiza el cálculo directamente en la base de datos para mayor eficiencia.
+                    </p>
+                    <p class="mb-0">
+                        Este promedio representa la media aritmética de todos los promedios individuales 
+                        de los estudiantes registrados en el sistema.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if total_estudiantes == 0 %}
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> 
+        <strong>No hay datos suficientes.</strong> Agrega calificaciones para ver estadísticas.
+    </div>
+    {% endif %}
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-center mt-4">
+        <a href="{% url 'listar_calificaciones' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-list"></i> Ver Todas las Calificaciones
+        </a>
+        <a href="{% url 'crear_calificacion' %}" class="btn btn-success btn-lg">
+            <i class="fas fa-plus-circle"></i> Nueva Calificación
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-secondary btn-lg">
+            <i class="fas fa-home"></i> Volver al Inicio
+        </a>
+    </div>
+</div>
+{% endblock %}
