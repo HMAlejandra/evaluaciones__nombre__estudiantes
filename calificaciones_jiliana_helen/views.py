@@ -128,3 +128,20 @@ def promedio_general(request):
     }
     
     return render(request, 'calificaciones/promedio_general.html', context)
+
+
+# ============================================
+# VISTA LOGIN - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+
+
+class CustomLoginView(LoginView):
+    """Vista personalizada para el inicio de sesión."""
+    template_name = 'auth/login.html'
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return reverse_lazy('home')

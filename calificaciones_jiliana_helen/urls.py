@@ -12,9 +12,6 @@ urlpatterns = [
     path('calificaciones/eliminar/<int:pk>/', views.eliminar_calificacion, name='eliminar_calificacion'),
     path('promedio-general/', views.promedio_general, name='promedio_general'),
     
-    # URLs de autenticación - PARTE DE HELEN (ella las creará)
-    # path('login/', views.login_view, name='login'),
-    # path('logout/', views.logout_view, name='logout'),
-    # path('registro/', views.registro_view, name='registro'),
-    # path('recuperar-password/', views.recuperar_password, name='recuperar_password'),
+    # URL de autenticación - LOGIN (HELEN)
+    path('login/', views.CustomLoginView.as_view(), name='login'),
 ]
