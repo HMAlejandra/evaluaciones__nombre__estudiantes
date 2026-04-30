@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Calificación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="page-title text-center mb-4">
+            <i class="fas fa-trash-alt"></i> Eliminar Calificación
+        </h1>
+        
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> Confirmación de Eliminación
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> 
+                    <strong>¡Atención!</strong> Esta acción no se puede deshacer.
+                </div>
+                
+                <p class="lead text-center mb-4">
+                    ¿Estás seguro de que deseas eliminar esta calificación?
+                </p>
+                
+                <div class="card mb-4" style="background-color: #f8fafc;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user"></i> {{ calificacion.nombre_estudiante }}
+                        </h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-id-card"></i> Identificación:</strong><br>
+                                    {{ calificacion.identificacion }}
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-book"></i> Asignatura:</strong><br>
+                                    {{ calificacion.asignatura }}
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-3">
+                                <p class="mb-0">
+                                    <strong>Nota 1</strong><br>
+                                    <span class="badge bg-info">{{ calificacion.nota1 }}</span>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="mb-0">
+                                    <strong>Nota 2</strong><br>
+                                    <span class="badge bg-info">{{ calificacion.nota2 }}</span>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="mb-0">
+                                    <strong>Nota 3</strong><br>
+                                    <span class="badge bg-info">{{ calificacion.nota3 }}</span>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="mb-0">
+                                    <strong>Promedio</strong><br>
+                                    <span class="badge {% if calificacion.promedio >= 70 %}bg-success{% elif calificacion.promedio >= 50 %}bg-warning{% else %}bg-danger{% endif %}">
+                                        {{ calificacion.promedio }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash"></i> Sí, Eliminar Calificación
+                        </button>
+                        <a href="{% url 'listar_calificaciones' %}" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-times"></i> No, Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
