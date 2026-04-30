@@ -156,12 +156,25 @@ def registro_view(request):
 
 
 # ============================================
-# VISTA LOGOUT - PARTE DE HELEN
+# VISTA RECUPERAR PASSWORD - PARTE DE HELEN
 # ============================================
 
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.forms import PasswordResetForm
 
 
-class CustomLogoutView(LogoutView):
-    """Vista personalizada para cerrar sesión."""
-    next_page = 'home'
+def recuperar_password_view(request):
+    """Vista para recuperar contraseña."""
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=False,
+                email_template_name='auth/password_reset_email.html',
+            )
+            messages.success(request, 'Se ha enviado un correo con instrucciones para recuperar tu contraseña.')
+            return redirect('login')
+    else:
+        form = PasswordResetForm()
+    
+    return render(request, 'auth/recuperar_password.html', {'form': form})
