@@ -12,6 +12,9 @@ urlpatterns = [
     path('calificaciones/eliminar/<int:pk>/', views.eliminar_calificacion, name='eliminar_calificacion'),
     path('promedio-general/', views.promedio_general, name='promedio_general'),
     
+    # URL de autenticación - REGISTRO (HELEN)
+    path('registro/', views.registro_view, name='registro'),
+    
     # URL de autenticación - RECUPERAR PASSWORD (HELEN)
     path('recuperar-password/', views.recuperar_password_view, name='recuperar_password'),
 ]
