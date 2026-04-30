@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Calificaciones{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title mb-0">
+        <i class="fas fa-list"></i> Lista de Calificaciones
+    </h1>
+    <a href="{% url 'crear_calificacion' %}" class="btn btn-success">
+        <i class="fas fa-plus-circle"></i> Nueva Calificación
+    </a>
+</div>
+
+<!-- Estadísticas -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_registros }}</div>
+            <div class="stat-label">
+                <i class="fas fa-users"></i> Total de Registros
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <div class="stat-number">{{ promedio_general }}</div>
+            <div class="stat-label">
+                <i class="fas fa-chart-line"></i> Promedio General
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if calificaciones %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><i class="fas fa-user"></i> Estudiante</th>
+                        <th><i class="fas fa-id-card"></i> Identificación</th>
+                        <th><i class="fas fa-book"></i> Asignatura</th>
+                        <th class="text-center"><i class="fas fa-star"></i> Nota 1</th>
+                        <th class="text-center"><i class="fas fa-star"></i> Nota 2</th>
+                        <th class="text-center"><i class="fas fa-star"></i> Nota 3</th>
+                        <th class="text-center"><i class="fas fa-calculator"></i> Promedio</th>
+                        <th class="text-center"><i class="fas fa-cog"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for calificacion in calificaciones %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ calificacion.nombre_estudiante }}</strong></td>
+                        <td>{{ calificacion.identificacion }}</td>
+                        <td>{{ calificacion.asignatura }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-info">{{ calificacion.nota1 }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info">{{ calificacion.nota2 }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info">{{ calificacion.nota3 }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge {% if calificacion.promedio >= 70 %}bg-success{% elif calificacion.promedio >= 50 %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ calificacion.promedio }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'editar_calificacion' calificacion.pk %}" 
+                               class="btn btn-sm btn-warning" 
+                               title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'eliminar_calificacion' calificacion.pk %}" 
+                               class="btn btn-sm btn-danger" 
+                               title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <a href="{% url 'promedio_general' %}" class="btn btn-info">
+        <i class="fas fa-chart-bar"></i> Ver Estadísticas Detalladas
+    </a>
+    <a href="{% url 'home' %}" class="btn btn-secondary">
+        <i class="fas fa-home"></i> Volver al Inicio
+    </a>
+</div>
+
+{% else %}
+<div class="alert alert-warning text-center" role="alert">
+    <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+    <h4>No hay calificaciones registradas</h4>
+    <p>Comienza agregando la primera calificación</p>
+    <a href="{% url 'crear_calificacion' %}" class="btn btn-success mt-3">
+        <i class="fas fa-plus-circle"></i> Crear Primera Calificación
+    </a>
+</div>
+{% endif %}
+{% endblock %}
