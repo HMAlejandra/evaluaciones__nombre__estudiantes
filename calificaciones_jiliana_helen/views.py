@@ -128,3 +128,15 @@ def promedio_general(request):
     }
     
     return render(request, 'calificaciones/promedio_general.html', context)
+
+
+# ============================================
+# VISTA LOGOUT - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.views import LogoutView
+
+
+class CustomLogoutView(LogoutView):
+    """Vista personalizada para cerrar sesión."""
+    next_page = 'home'
