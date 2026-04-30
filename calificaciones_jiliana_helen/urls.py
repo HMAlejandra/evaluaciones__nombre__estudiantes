@@ -2,10 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-<<<<<<< HEAD
-    # Vista de inicio - RAMA: feature/jiliana-home
-    path('', views.home, name='home'),
-=======
     # Vista de inicio
     path('', views.home, name='home'),
     
@@ -16,10 +12,6 @@ urlpatterns = [
     path('calificaciones/eliminar/<int:pk>/', views.eliminar_calificacion, name='eliminar_calificacion'),
     path('promedio-general/', views.promedio_general, name='promedio_general'),
     
-    # URLs de autenticación - PARTE DE HELEN (ella las creará)
-    # path('login/', views.login_view, name='login'),
-    # path('logout/', views.logout_view, name='logout'),
-    # path('registro/', views.registro_view, name='registro'),
-    # path('recuperar-password/', views.recuperar_password, name='recuperar_password'),
->>>>>>> feature/jiliana-configuracion
+    # URL de autenticación - RECUPERAR PASSWORD (HELEN)
+    path('recuperar-password/', views.recuperar_password_view, name='recuperar_password'),
 ]

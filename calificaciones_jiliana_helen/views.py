@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# ============================================
-# VISTA HOME - PARTE DE JILIANA
-=======
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -13,14 +7,11 @@ from .forms import CalificacionForm
 
 # ============================================
 # VISTAS PÚBLICAS
->>>>>>> feature/jiliana-configuracion
 # ============================================
 
 def home(request):
     """Vista de inicio/home - Accesible para todos"""
     return render(request, 'home.html')
-<<<<<<< HEAD
-=======
 
 
 # ============================================
@@ -137,4 +128,28 @@ def promedio_general(request):
     }
     
     return render(request, 'calificaciones/promedio_general.html', context)
->>>>>>> feature/jiliana-configuracion
+
+
+# ============================================
+# VISTA RECUPERAR PASSWORD - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.forms import PasswordResetForm
+
+
+def recuperar_password_view(request):
+    """Vista para recuperar contraseña."""
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=False,
+                email_template_name='auth/password_reset_email.html',
+            )
+            messages.success(request, 'Se ha enviado un correo con instrucciones para recuperar tu contraseña.')
+            return redirect('login')
+    else:
+        form = PasswordResetForm()
+    
+    return render(request, 'auth/recuperar_password.html', {'form': form})
