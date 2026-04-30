@@ -156,6 +156,18 @@ def registro_view(request):
 
 
 # ============================================
+# VISTA LOGOUT - PARTE DE HELEN
+# ============================================
+
+from django.contrib.auth.views import LogoutView
+
+
+class CustomLogoutView(LogoutView):
+    """Vista personalizada para cerrar sesión."""
+    next_page = 'home'
+
+
+# ============================================
 # VISTA RECUPERAR PASSWORD - PARTE DE HELEN
 # ============================================
 
