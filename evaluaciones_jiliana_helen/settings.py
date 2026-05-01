@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'evaluaciones_jiliana_helen.middleware.EnsureDatabaseMiddleware',  # Asegurar DB en Vercel
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,11 +76,10 @@ WSGI_APPLICATION = 'evaluaciones_jiliana_helen.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Usar base de datos en memoria para Vercel (SQLite no funciona en Vercel)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',  # Base de datos en memoria
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
