@@ -12,6 +12,10 @@ subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'])
 print("Instalando dependencias...")
 subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
 
+# Ejecutar migraciones
+print("Ejecutando migraciones...")
+subprocess.run([sys.executable, 'manage.py', 'migrate', '--noinput'])
+
 # Recolectar archivos estáticos
 print("Recolectando archivos estáticos...")
 subprocess.run([sys.executable, 'manage.py', 'collectstatic', '--noinput', '--clear'])

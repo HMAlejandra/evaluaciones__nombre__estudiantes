@@ -12,6 +12,15 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'evaluaciones_jiliana_helen.settings')
 
+# Ejecutar migraciones automáticamente en Vercel (cuando hay DATABASE_URL)
+if 'DATABASE_URL' in os.environ:
+    from django.core.management import execute_from_command_line
+    try:
+        execute_from_command_line(['manage.py', 'migrate', '--noinput'])
+        print("✅ Migraciones ejecutadas correctamente en Vercel")
+    except Exception as e:
+        print(f"⚠️ Error al ejecutar migraciones: {e}")
+
 application = get_wsgi_application()
 
 # Vercel handler
